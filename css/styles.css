@@ -250,7 +250,7 @@ svg text {
         font-size: 14px;
     }
 
-    header, nav, main, footer {
+    header, nav, main {
         padding: 0.5rem;
     }
 
