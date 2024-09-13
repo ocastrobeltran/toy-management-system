@@ -14,21 +14,13 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 ## Estructura del Proyecto
 /toy-management-system
 │   index.html
-
 │   README.md
-
 ├── css
-
 │   └── styles.css
-
 ├── js
-
 │   ├── main.js
-
 │   └── data.js
-
 └── img
-
 └── (imágenes de juguetes)
 
 
