@@ -254,6 +254,10 @@ svg text {
         padding: 0.5rem;
     }
 
+    main {
+        margin-bottom: 60px;
+    }
+
     /* Ajustes para el header */
     .logo {
         height: 30px;
