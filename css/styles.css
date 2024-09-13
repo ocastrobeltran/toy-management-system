@@ -8,7 +8,7 @@ body {
     color: #2086d8;
 }
 
-header, nav, main {
+header, nav, main{
     padding: 1rem;
 }
 
@@ -61,10 +61,6 @@ main {
     padding-bottom: 60px;
 }
 
-h2 {
-    text-align: center;
-}
-
 footer {
     background-color: #20a8d8;
     text-align: center;
@@ -76,6 +72,10 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+h2 {
+    text-align: center;
 }
 
 /* Estilos para el formulario */
@@ -243,63 +243,132 @@ svg text {
     margin: 0 0.25rem;
 }
 
-.filters {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+/* Media Queries para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    /* Ajustes generales */
+    body {
+        font-size: 14px;
+    }
+
+    header, nav, main, footer {
+        padding: 0.5rem;
+    }
+
+    /* Ajustes para el header */
+    .logo {
+        height: 30px;
+    }
+
+    /* Ajustes para la navegación */
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    /* Ajustes para el formulario */
+    form {
+        padding: 10px;
+    }
+
+    /* Ajustes para la tabla */
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 0.25rem;
+    }
+
+    /* Ajustes para el modal */
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    /* Ajustes para los reportes */
+    .report-section {
+        padding: 10px;
+    }
+
+    /* Ajustes para el título animado */
+    .wrapper {
+        padding: 10px;
+    }
+
+    svg {
+        height: 60px;
+    }
+
+    svg text {
+        font-size: 24px;
+    }
+
+    /* Ajustes para la paginación */
+    .pagination button {
+        padding: 0.25rem 0.5rem;
+    }
 }
 
-.filters select {
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
+/* Media Queries para dispositivos muy pequeños */
+@media screen and (max-width: 480px) {
+    /* Ajustes adicionales para dispositivos muy pequeños */
+    body {
+        font-size: 12px;
+    }
+
+    .logo {
+        height: 25px;
+    }
+
+    svg {
+        height: 40px;
+    }
+
+    svg text {
+        font-size: 18px;
+    }
+
+    /* Ajustar la tabla para scroll horizontal en dispositivos muy pequeños */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 480px; /* Asegura que la tabla tenga un ancho mínimo */
+    }
 }
 
-.reports-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
+/* Ajustes específicos para el componente SVG y wrapper */
+@media screen and (max-width: 768px) {
+    .wrapper {
+        padding: 10px;
+    }
+
+    svg {
+        height: 80px;
+    }
+
+    svg text {
+        font-size: 30px;
+        stroke-width: 1.5;
+    }
 }
 
-.report-card {
-    background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-}
+@media screen and (max-width: 480px) {
+    .wrapper {
+        padding: 5px;
+    }
 
-.report-card h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: #2086d8;
-}
+    svg {
+        height: 60px;
+    }
 
-.report-content p {
-    margin: 0.25rem 0;
-}
-
-.action-button {
-    position: relative;
-}
-
-.tooltip {
-    visibility: hidden;
-    width: 200px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -100px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.action-button:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
+    svg text {
+        font-size: 22px;
+        stroke-width: 1;
+    }
 }

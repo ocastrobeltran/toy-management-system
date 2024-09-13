@@ -127,8 +127,6 @@ function handleFormSubmit(e) {
 }
 
 // Función para mostrar la tabla de juguetes
-// Función para mostrar la tabla de juguetes
-// Función para mostrar la tabla de juguetes
 function showTable() {
     const toys = getToys();
     const itemsPerPage = 10;
