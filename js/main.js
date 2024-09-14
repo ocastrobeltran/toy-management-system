@@ -34,8 +34,8 @@ function showForm() {
                 <textarea id="description" required></textarea>
             </div>
             <div>
-                <label for="image">Imagen:</label>
-                <input type="file" id="image" accept="image/*" required>
+                <label for="images">Imágenes:</label>
+                <input type="file" id="images" accept="image/*" multiple required>
             </div>
             <div>
                 <label for="type">Tipo:</label>
@@ -77,6 +77,10 @@ function showForm() {
                     <option value="Dañado">Dañado</option>
                 </select>
             </div>
+            <div>
+                <label for="tags">Etiquetas (separadas por comas):</label>
+                <input type="text" id="tags">
+            </div>
             <button type="submit">Guardar Juguete</button>
         </form>
     `;
@@ -90,11 +94,12 @@ function handleFormSubmit(e) {
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
-    const image = document.getElementById('image').files[0];
+    const images = Array.from(document.getElementById('images').files).map(file => URL.createObjectURL(file));
     const type = document.getElementById('type').value;
     const origin = document.getElementById('origin').value;
     const arrivalDate = document.getElementById('arrivalDate').value;
     const status = document.getElementById('status').value;
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
 
     // Validar fecha
     const sixYearsAgo = new Date();
@@ -107,46 +112,75 @@ function handleFormSubmit(e) {
         return;
     }
 
-    // Crear arreglo de juguete
-    const toy = [
-        Date.now(),
+    // Crear objeto juguete
+    const toy = {
         name,
         description,
-        URL.createObjectURL(image),
+        images,
         type,
         origin,
         arrivalDate,
-        status
-    ];
+        status,
+        tags
+    };
 
     // Agregar juguete
     addToy(toy);
 
     alert('Juguete guardado con éxito!');
     e.target.reset();
+    showTable();
 }
 
+// Función para mostrar la tabla de juguetes
 // Función para mostrar la tabla de juguetes
 function showTable() {
     const toys = getToys();
     const itemsPerPage = 10;
     let currentPage = 1;
 
-    function renderTable(page) {
+    // Create search and filter elements dynamically
+    const searchFilterHTML = `
+        <div id="search-filter" class="search-filter">
+            <input type="text" id="search-input" placeholder="Buscar juguetes...">
+            <select id="filter-type">
+                <option value="">Todos los tipos</option>
+                <option value="Muñeco">Muñeco</option>
+                <option value="Didáctico">Didáctico</option>
+                <option value="Auto">Auto</option>
+                <option value="Peluche">Peluche</option>
+                <option value="Maquillaje">Maquillaje</option>
+                <option value="Electrónico">Electrónico</option>
+                <option value="Electrodoméstico">Electrodoméstico</option>
+                <option value="Deportivo">Deportivo</option>
+            </select>
+            <select id="filter-status">
+                <option value="">Todos los estados</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Buen estado">Buen estado</option>
+                <option value="Aun funciona">Aun funciona</option>
+                <option value="Dañado">Dañado</option>
+            </select>
+            <button id="reset-filters">Limpiar Filtros</button>
+        </div>
+    `;
+
+    function renderTable(page, filteredToys) {
         const start = (page - 1) * itemsPerPage;
         const end = start + itemsPerPage;
-        const paginatedToys = toys.slice(start, end);
+        const paginatedToys = filteredToys.slice(start, end);
 
         let tableHTML = `
             <h2>Lista de Juguetes</h2>
+            ${searchFilterHTML}
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
                         <th>Estado</th>
                         <th>Fecha de Llegada</th>
+                        <th>Etiquetas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -154,29 +188,29 @@ function showTable() {
         `;
 
         paginatedToys.forEach(toy => {
-            const toyDate = new Date(toy[6]);
+            const toyDate = new Date(toy.arrivalDate);
             const oneYearAgo = new Date();
             oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-            const canGift = ['Nuevo', 'Buen estado', 'Aun funciona'].includes(toy[7]) && toyDate <= oneYearAgo;
-            const canDiscard = toy[7] === 'Dañado';
+            const canGift = ['Nuevo', 'Buen estado', 'Aun funciona'].includes(toy.status) && toyDate <= oneYearAgo;
+            const canDiscard = toy.status === 'Dañado';
 
             tableHTML += `
                 <tr>
-                    <td>${toy[0]}</td>
-                    <td>${toy[1]}</td>
-                    <td>${toy[4]}</td>
+                    <td>${toy.name}</td>
+                    <td>${toy.type}</td>
                     <td>
-                        <select onchange="changeStatus(${toy[0]}, this.value)">
-                            <option value="Nuevo" ${toy[7] === 'Nuevo' ? 'selected' : ''}>Nuevo</option>
-                            <option value="Buen estado" ${toy[7] === 'Buen estado' ? 'selected' : ''}>Buen estado</option>
-                            <option value="Aun funciona" ${toy[7] === 'Aun funciona' ? 'selected' : ''}>Aun funciona</option>
-                            <option value="Dañado" ${toy[7] === 'Dañado' ? 'selected' : ''}>Dañado</option>
+                        <select onchange="changeStatus(${toy.id}, this.value)">
+                            <option value="Nuevo" ${toy.status === 'Nuevo' ? 'selected' : ''}>Nuevo</option>
+                            <option value="Buen estado" ${toy.status === 'Buen estado' ? 'selected' : ''}>Buen estado</option>
+                            <option value="Aun funciona" ${toy.status === 'Aun funciona' ? 'selected' : ''}>Aun funciona</option>
+                            <option value="Dañado" ${toy.status === 'Dañado' ? 'selected' : ''}>Dañado</option>
                         </select>
                     </td>
-                    <td>${toy[6]}</td>
+                    <td>${toy.arrivalDate}</td>
+                    <td>${(toy.tags || []).join(', ')}</td>
                     <td>
-                        <button onclick="showDetails(${toy[0]})">Ver Detalles</button>
-                        <button onclick="performAction(${toy[0]})" ${!canGift && !canDiscard ? 'disabled' : ''} class="action-button">
+                        <button onclick="showDetails(${toy.id})">Ver Detalles</button>
+                        <button onclick="performAction(${toy.id})" ${!canGift && !canDiscard ? 'disabled' : ''} class="action-button">
                             ${canGift ? 'Regalar' : (canDiscard ? 'Botar' : 'No disponible')}
                             <span class="tooltip">
                                 Condiciones para regalar:
@@ -197,7 +231,7 @@ function showTable() {
         `;
 
         // Agregar paginación
-        const totalPages = Math.ceil(toys.length / itemsPerPage);
+        const totalPages = Math.ceil(filteredToys.length / itemsPerPage);
         let paginationHTML = '<div class="pagination">';
         for (let i = 1; i <= totalPages; i++) {
             paginationHTML += `<button onclick="changePage(${i})" ${i === currentPage ? 'disabled' : ''}>${i}</button>`;
@@ -205,14 +239,46 @@ function showTable() {
         paginationHTML += '</div>';
 
         mainContent.innerHTML = tableHTML + paginationHTML;
+
+        // Add event listeners after rendering the table
+        document.getElementById('search-input').addEventListener('input', filterToys);
+        document.getElementById('filter-type').addEventListener('change', filterToys);
+        document.getElementById('filter-status').addEventListener('change', filterToys);
+        document.getElementById('reset-filters').addEventListener('click', resetFilters);
     }
 
-    renderTable(currentPage);
+    function filterToys() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase();
+        const typeFilter = document.getElementById('filter-type').value;
+        const statusFilter = document.getElementById('filter-status').value;
+
+        const filteredToys = toys.filter(toy => {
+            const matchesSearch = toy.name.toLowerCase().includes(searchTerm) ||
+                                  toy.description.toLowerCase().includes(searchTerm) ||
+                                  (toy.tags || []).some(tag => tag.toLowerCase().includes(searchTerm));
+            const matchesType = typeFilter === '' || toy.type === typeFilter;
+            const matchesStatus = statusFilter === '' || toy.status === statusFilter;
+
+            return matchesSearch && matchesType && matchesStatus;
+        });
+
+        renderTable(1, filteredToys);
+    }
+
+    function resetFilters() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('filter-type').value = '';
+        document.getElementById('filter-status').value = '';
+        renderTable(1, toys);
+    }
+
+    // Initial render
+    renderTable(1, toys);
 
     // Función para cambiar de página
     window.changePage = function (page) {
         currentPage = page;
-        renderTable(currentPage);
+        filterToys();
     }
 }
 
@@ -248,16 +314,32 @@ function changeStatus(id, newStatus) {
 
 // Función para mostrar detalles de un juguete
 function showDetails(id) {
-    const toy = getToys().find(toy => toy[0] === id);
+    const toy = getToys().find(toy => toy.id === id);
     if (toy) {
         modalBody.innerHTML = `
-            <h3>${toy[1]}</h3>
-            <img src="${toy[3]}" alt="${toy[1]}" style="max-width: 200px;">
-            <p><strong>Estado:</strong> ${toy[7]}</p>
-            <p><strong>Tipo:</strong> ${toy[4]}</p>
-            <p><strong>Descripción:</strong> ${toy[2]}</p>
-            <p><strong>Origen:</strong> ${toy[5]}</p>
-            <p><strong>Fecha de llegada:</strong> ${toy[6]}</p>
+            <h3>${toy.name}</h3>
+            <div class="gallery">
+                ${toy.images.map(img => `<img src="${img}" alt="${toy.name}">`).join('')}
+            </div>
+            <p><strong>Estado:</strong> ${toy.status}</p>
+            <p><strong>Tipo:</strong> ${toy.type}</p>
+            <p><strong>Descripción:</strong> ${toy.description}</p>
+            <p><strong>Origen:</strong> ${toy.origin}</p>
+            <p><strong>Fecha de llegada:</strong> ${toy.arrivalDate}</p>
+            <div class="tags">
+                ${(toy.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+            <div class="change-history">
+                <h4>Historial de cambios:</h4>
+                <ul>
+                    ${toy.changeHistory.map(change => `
+                        <li>
+                            <strong>${new Date(change.date).toLocaleString()}:</strong>
+                            ${change.action} - ${change.details}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
         `;
         modal.style.display = "block";
     }
@@ -265,24 +347,24 @@ function showDetails(id) {
 
 // Función para realizar una acción en un juguete
 function performAction(id) {
-    const toy = getToys().find(toy => toy[0] === id);
+    const toy = getToys().find(toy => toy.id === id);
     if (toy) {
-        const arrivalDate = new Date(toy[6]);
+        const arrivalDate = new Date(toy.arrivalDate);
         const oneYearAgo = new Date();
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-        if (toy[7] === 'Dañado') {
-            if (confirm('¿Estás seguro de que quieres botar este juguete?')) {
+        if (toy.status === 'Dañado') {
+            if (confirm('¿Estás seguro de que quieres botar este juguete?\n\nCondición cumplida: El juguete está dañado.')) {
                 removeToy(id);
                 showTable();
             }
-        } else if (['Nuevo', 'Buen estado', 'Aun funciona'].includes(toy[7]) && arrivalDate <= oneYearAgo) {
-            if (confirm('¿Estás seguro de que quieres regalar este juguete?')) {
+        } else if (['Nuevo', 'Buen estado', 'Aun funciona'].includes(toy.status) && arrivalDate <= oneYearAgo) {
+            if (confirm(`¿Estás seguro de que quieres regalar este juguete?\n\nCondiciones cumplidas:\n- El juguete está en estado: ${toy.status}\n- El juguete tiene más de un año de antigüedad (Fecha de llegada: ${toy.arrivalDate})`)) {
                 removeToy(id);
                 showTable();
             }
         } else {
-            alert('No se puede realizar ninguna acción con este juguete en este momento.');
+            alert('No se puede realizar ninguna acción con este juguete en este momento.\n\nCondiciones para regalar:\n- El juguete debe estar en estado Nuevo, Buen estado o Aun funciona\n- El juguete debe tener más de un año de antigüedad\n\nCondición para botar:\n- El juguete debe estar en estado Dañado');
         }
     }
 }
@@ -294,7 +376,7 @@ function showReports() {
     const currentMonth = new Date().getMonth() + 1;
 
     // Obtener años únicos de los juguetes
-    const years = [...new Set(toys.map(toy => new Date(toy[6]).getFullYear()))].sort((a, b) => b - a);
+    const years = [...new Set(toys.map(toy => new Date(toy.arrivalDate).getFullYear()))].sort((a, b) => b - a);
 
     let reportsHTML = `
         <h2>Reportes de Juguetes</h2>
@@ -352,7 +434,7 @@ function showReports() {
         let damagedToys = 0;
 
         toys.forEach(toy => {
-            const date = new Date(toy[6]);
+            const date = new Date(toy.arrivalDate);
             const toyYear = date.getFullYear();
             const toyMonth = date.getMonth() + 1;
 
@@ -363,16 +445,16 @@ function showReports() {
             }
 
             // Otros reportes
-            toysByStatus[toy[7]] = (toysByStatus[toy[7]] || 0) + 1;
-            toysByOrigin[toy[5]] = (toysByOrigin[toy[5]] || 0) + 1;
-            toysByType[toy[4]] = (toysByType[toy[4]] || 0) + 1;
+            toysByStatus[toy.status] = (toysByStatus[toy.status] || 0) + 1;
+            toysByOrigin[toy.origin] = (toysByOrigin[toy.origin] || 0) + 1;
+            toysByType[toy.type] = (toysByType[toy.type] || 0) + 1;
 
-            if (toy[7] === 'Dañado') damagedToys++;
+            if (toy.status === 'Dañado') damagedToys++;
         });
 
         // Actualizar contenido de los reportes
         document.querySelector('#toysByMonthYear .report-content').innerHTML =
-            Object.entries(toysByMonthYear).map(([key, value]) => `<p>${key}: ${value}</p>`).join('');
+            Object.entries(toysByMonthYear).map(([key, value]) => `<p>${key}: ${value}</p>`).join('') || '<p>No hay juguetes para este mes y año</p>';
 
         document.querySelector('#toysByStatus .report-content').innerHTML =
             Object.entries(toysByStatus).map(([key, value]) => `<p>${key}: ${value}</p>`).join('');
