@@ -348,6 +348,10 @@ svg text {
 
 /* Ajustes específicos para el componente SVG y wrapper */
 @media screen and (max-width: 768px) {
+    #search-filter {
+        flex-direction: column;
+    }
+
     .wrapper {
         padding: 10px;
     }
@@ -504,11 +508,4 @@ svg text {
 
 .change-history li {
     margin-bottom: 0.5rem;
-}
-
-/* Ajustes para dispositivos móviles */
-@media screen and (max-width: 768px) {
-    #search-filter {
-        flex-direction: column;
-    }
 }
