@@ -416,6 +416,12 @@ function showReports() {
                 <div class="report-content"></div>
             </div>
         </div>
+
+        <h3>Gráficas de Análisis</h3>
+        <div class="analysis-graphs">
+            <canvas id="toyTypesChart"></canvas>
+            <canvas id="toyStatusChart"></canvas>
+        </div>
     `;
 
     mainContent.innerHTML = reportsHTML;
@@ -466,6 +472,59 @@ function showReports() {
 
         document.querySelector('#toysByType .report-content').innerHTML =
             Object.entries(toysByType).map(([key, value]) => `<p>${key}: ${value}</p>`).join('');
+
+        // Generar gráficos
+        generateCharts(toysByType, toysByStatus);
+    }
+
+    function generateCharts(toysByType, toysByStatus) {
+        // Gráfico de tipos de juguetes
+        new Chart(document.getElementById('toyTypesChart'), {
+            type: 'bar',
+            data: {
+                labels: Object.keys(toysByType),
+                datasets: [{
+                    label: 'Cantidad de Juguetes',
+                    data: Object.values(toysByType),
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribución de Tipos de Juguetes'
+                    }
+                }
+            }
+        });
+
+        // Gráfico de estados de juguetes
+        new Chart(document.getElementById('toyStatusChart'), {
+            type: 'pie',
+            data: {
+                labels: Object.keys(toysByStatus),
+                datasets: [{
+                    data: Object.values(toysByStatus),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribución de Estados de Juguetes'
+                    }
+                }
+            }
+        });
     }
 
     yearSelect.addEventListener('change', generateReports);

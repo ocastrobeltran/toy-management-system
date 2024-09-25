@@ -509,3 +509,16 @@ svg text {
 .change-history li {
     margin-bottom: 0.5rem;
 }
+
+.analysis-graphs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.analysis-graphs canvas {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
