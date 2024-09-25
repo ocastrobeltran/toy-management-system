@@ -36,11 +36,21 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 
 ### Instalación
 1. Clona este repositorio o descarga los archivos.
-2. No se requiere instalación adicional, ya que el proyecto utiliza tecnologías del lado del cliente.
+2. Para la parte web, no se requiere instalación adicional.
+3. Para el script de Python:
+   - Asegúrate de tener Python 3.x instalado en tu sistema.
+   - Instala las dependencias necesarias ejecutando:
+   ``` pip install beautifulsoup4 matplotlib ```
 
 ### Ejecución
-1. Abre el archivo `index.html` en tu navegador web.
-2. Navega por las diferentes secciones utilizando el menú de navegación.
+1. Para la aplicación web:
+- Abre el archivo `index.html` en tu navegador web.
+- Navega por las diferentes secciones utilizando el menú de navegación.
+
+2. Para el script de Python:
+- Asegúrate de que el archivo `index.html` esté en la misma carpeta que `analyze_toys.py`.
+- Ejecuta el script desde la línea de comandos:
+  ``` python analyze_toys.py ```
 
 ### Funcionalidades
 
@@ -71,6 +81,69 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 1. Haz clic en "Reportes" en el menú de navegación.
 2. Utiliza los selectores de año y mes para filtrar los reportes por período.
 3. Visualiza diferentes categorías de reportes: juguetes por mes y año, por estado, juguetes dañados, por origen y por tipo.
+
+## Análisis de Datos con Python
+
+El archivo `analyze_toys.py` proporciona funcionalidades adicionales para el análisis de datos:
+
+1. Extracción de datos:
+- Utiliza BeautifulSoup para analizar el archivo HTML y extraer los datos de los juguetes.
+
+2. Análisis de datos:
+- Cuenta la frecuencia de tipos de juguetes y estados.
+
+3. Generación de gráficos:
+- Crea un gráfico de barras para la distribución de tipos de juguetes.
+- Crea un gráfico circular para la distribución de estados de juguetes.
+
+4. Guardado de gráficos:
+- Guarda los gráficos generados como archivos PNG.
+
+### Explicación del Código de analyze_toys.py
+
+```python
+import os
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+from collections import Counter
+
+# Leer el archivo HTML
+with open('index.html', 'r', encoding='utf-8') as file:
+content = file.read()
+
+# Crear objeto BeautifulSoup
+soup = BeautifulSoup(content, 'html.parser')
+
+# Encontrar el script que contiene los datos de los juguetes
+script_tag = soup.find('script', text=lambda t: t and 'let toys =' in t)
+
+if script_tag:
+# Extraer y procesar los datos de los juguetes
+# ...
+
+# Generar gráficos
+# ...
+
+print("Análisis completado. Las gráficas se han guardado como 'toy_types_distribution.png' y 'toy_status_distribution.png'.")
+else:
+print("No se pudo encontrar la lista de juguetes en el archivo HTML.")
+
+Este script realiza las siguientes operaciones:
+
+1. Lee el archivo HTML de la aplicación.
+2. Utiliza BeautifulSoup para analizar el HTML y encontrar los datos de los juguetes.
+3. Extrae y procesa los datos para obtener estadísticas sobre tipos y estados de juguetes.
+4. Genera dos gráficos utilizando Matplotlib:
+
+1. Un gráfico de barras para la distribución de tipos de juguetes.
+2. Un gráfico circular para la distribución de estados de juguetes.
+
+
+
+5. Guarda los gráficos generados como archivos PNG.
+
+
+Los gráficos generados pueden ser utilizados para enriquecer los reportes en la aplicación web.
 
 ## Reglas de Negocio
 - Un juguete puede ser regalado si:
