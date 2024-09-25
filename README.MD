@@ -127,6 +127,7 @@ if script_tag:
 print("Análisis completado. Las gráficas se han guardado como 'toy_types_distribution.png' y 'toy_status_distribution.png'.")
 else:
 print("No se pudo encontrar la lista de juguetes en el archivo HTML.")
+```
 
 Este script realiza las siguientes operaciones:
 
