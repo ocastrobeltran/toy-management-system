@@ -5,9 +5,13 @@ const modalBody = document.getElementById('modal-body');
 const closeModal = document.getElementsByClassName('close')[0];
 
 // Navegación
-document.getElementById('nav-form').addEventListener('click', showForm);
-document.getElementById('nav-table').addEventListener('click', showTable);
-document.getElementById('nav-reports').addEventListener('click', showReports);
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    document.getElementById('logout-button').addEventListener('click', handleLogout);
+    document.getElementById('nav-form').addEventListener('click', showForm);
+    document.getElementById('nav-table').addEventListener('click', showTable);
+    document.getElementById('nav-reports').addEventListener('click', showReports);
+});
 
 // Cerrar modal
 closeModal.onclick = function () {
@@ -22,8 +26,9 @@ window.onclick = function (event) {
 
 // Función para mostrar el formulario
 function showForm() {
+    const currentUser = localStorage.getItem('currentUser');
     mainContent.innerHTML = `
-        <h2>Ingresar Juguete</h2>
+        <h2>Ingresar Juguete para ${currentUser}</h2>
         <form id="toy-form">
             <div>
                 <label for="name">Nombre:</label>
@@ -91,6 +96,7 @@ function showForm() {
 // Función para manejar el envío del formulario
 function handleFormSubmit(e) {
     e.preventDefault();
+    const currentUser = localStorage.getItem('currentUser');
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
@@ -125,7 +131,7 @@ function handleFormSubmit(e) {
     };
 
     // Agregar juguete
-    addToy(toy);
+    addToy(currentUser, toy);
 
     alert('Juguete guardado con éxito!');
     e.target.reset();
@@ -135,7 +141,8 @@ function handleFormSubmit(e) {
 // Función para mostrar la tabla de juguetes
 // Función para mostrar la tabla de juguetes
 function showTable() {
-    const toys = getToys();
+    const currentUser = localStorage.getItem('currentUser');
+    const toys = getToys(currentUser);
     const itemsPerPage = 10;
     let currentPage = 1;
 
@@ -535,3 +542,20 @@ function showReports() {
 
 // Iniciar mostrando el formulario
 showForm();
+
+// Verificar autenticación
+function checkAuth() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        window.location.href = 'auth.html';
+    } else {
+        document.getElementById('username-display').textContent = `Bienvenido, ${currentUser}`;
+        document.getElementById('logout-button').style.display = 'inline-block';
+    }
+}
+
+// Manejar cierre de sesión
+function handleLogout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'auth.html';
+}

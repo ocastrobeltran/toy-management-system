@@ -522,3 +522,77 @@ svg text {
     height: auto;
     margin-bottom: 1rem;
 }
+
+/* Estilos para el formulario de autenticación */
+#auth-container {
+    max-width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#auth-container h2 {
+    text-align: center;
+    color: #2086d8;
+}
+
+#auth-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+#auth-container input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #a8ebe9;
+    border-radius: 4px;
+}
+
+#auth-container button {
+    background-color: #20a8d8;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#auth-container button:hover {
+    background-color: #2086d8;
+}
+
+#auth-container p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#auth-container a {
+    color: #20a8d8;
+    text-decoration: none;
+}
+
+#auth-container a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para el botón de cierre de sesión */
+#logout-button {
+    background-color: #20a8d8;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#logout-button:hover {
+    background-color: #2086d8;
+}
+
+#user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Juguetes - Autenticación</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="https://talentotech.gov.co/849/channels-748_logo_talentotech.png" alt="Talento Tech Logo" class="logo">
+            <img src="https://talentotech.gov.co/849/channels-748_logo_mintic_light.svg" alt="MinTIC Logo" class="logo">
+        </div>
+        <div class="wrapper">
+            <svg>
+                <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                    Sistema de Control de Juguetes
+                </text>
+            </svg>
+        </div>
+    </header>
+
+    <main>
+        <div id="auth-container">
+            <div id="login-form">
+                <h2>Iniciar Sesión</h2>
+                <form id="login">
+                    <input type="text" id="login-username" placeholder="Nombre de usuario" required>
+                    <input type="password" id="login-password" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+                <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Registrarse</h2>
+                <form id="register">
+                    <input type="text" id="register-username" placeholder="Nombre de usuario" required>
+                    <input type="password" id="register-password" placeholder="Contraseña" required>
+                    <button type="submit">Registrarse</button>
+                </form>
+                <p>¿Ya tienes una cuenta? <a href="#" id="show-login">Inicia sesión</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Oscar Castro - 2024 Sistema de Control de Juguetes</p>
+    </footer>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

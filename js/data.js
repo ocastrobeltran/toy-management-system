@@ -83,3 +83,40 @@ function loadToys() {
 
 // Cargar los juguetes al iniciar
 loadToys();
+
+// Función para obtener los juguetes de un usuario específico
+function getToys(username) {
+    const allToys = JSON.parse(localStorage.getItem('toys') || '{}');
+    return allToys[username] || [];
+}
+
+// Función para agregar un juguete para un usuario específico
+function addToy(username, toy) {
+    const allToys = JSON.parse(localStorage.getItem('toys') || '{}');
+    if (!allToys[username]) {
+        allToys[username] = [];
+    }
+    allToys[username].push(toy);
+    localStorage.setItem('toys', JSON.stringify(allToys));
+}
+
+// Función para actualizar un juguete de un usuario específico
+function updateToy(username, id, updates) {
+    const allToys = JSON.parse(localStorage.getItem('toys') || '{}');
+    if (allToys[username]) {
+        const index = allToys[username].findIndex(toy => toy[0] === id);
+        if (index !== -1) {
+            allToys[username][index] = { ...allToys[username][index], ...updates };
+            localStorage.setItem('toys', JSON.stringify(allToys));
+        }
+    }
+}
+
+// Función para eliminar un juguete de un usuario específico
+function removeToy(username, id) {
+    const allToys = JSON.parse(localStorage.getItem('toys') || '{}');
+    if (allToys[username]) {
+        allToys[username] = allToys[username].filter(toy => toy[0] !== id);
+        localStorage.setItem('toys', JSON.stringify(allToys));
+    }
+}
