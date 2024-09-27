@@ -1,11 +1,13 @@
 # Sistema de Control de Juguetes
 
 ## Descripción
-Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gestionar y hacer seguimiento de los juguetes de un niño. Permite registrar nuevos juguetes, ver una lista de juguetes existentes, actualizar su estado, y generar reportes sobre la colección de juguetes.
+Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gestionar y hacer seguimiento de los juguetes de un niño. Permite a los usuarios registrarse, iniciar sesión, registrar nuevos juguetes, ver una lista de juguetes existentes, actualizar su estado, y generar reportes sobre la colección de juguetes.
 
 ## Características
-- Registro de nuevos juguetes con detalles como nombre, descripción, imágenes múltiples, tipo, origen, fecha de llegada, estado y etiquetas.
-- Visualización de juguetes en una tabla paginada con búsqueda y filtrado avanzado.
+- Sistema de cuentas de usuario con registro, inicio de sesión y cierre de sesión.
+- Registro de nuevos juguetes con detalles como nombre, descripción, imagen, tipo, origen, fecha de llegada y estado.
+- Visualización de juguetes en una tabla paginada.
+- Búsqueda y filtrado avanzado de juguetes.
 - Actualización del estado de los juguetes directamente desde la tabla.
 - Sistema de etiquetas para categorizar y buscar juguetes fácilmente.
 - Galería de imágenes para cada juguete.
@@ -13,24 +15,31 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 - Funcionalidad para regalar o botar juguetes basado en condiciones específicas.
 - Generación de reportes detallados sobre la colección de juguetes.
 - Interfaz de usuario intuitiva con diseño responsivo.
+- Análisis de datos y generación de gráficos utilizando Python y matplotlib.
 
 ## Estructura del Proyecto
 /toy-management-system
 │   index.html
+│   auth.html
 │   README.md
+│   analyze_toys.py
 ├── css
 │   └── styles.css
 ├── js
 │   ├── main.js
-│   └── data.js
+│   ├── data.js
+│   └── auth.js
 └── img
-    └── (imágenes de juguetes)
+└── (imágenes de juguetes)
 
 ## Tecnologías Utilizadas
 - HTML5
 - CSS3
 - JavaScript (ES6+)
 - LocalStorage para persistencia de datos
+- Python 3.x
+- BeautifulSoup4 (para análisis HTML)
+- Matplotlib (para generación de gráficos)
 
 ## Cómo Usar
 
@@ -54,17 +63,20 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 
 ### Funcionalidades
 
+#### Registro e Inicio de Sesión
+1. Accede a `auth.html` y elige entre registrarte o iniciar sesión.
+2. Completa el formulario correspondiente con tu nombre de usuario y contraseña.
+
 #### Ingresar un Nuevo Juguete
-1. Haz clic en "Ingresar Juguete" en el menú de navegación.
-2. Completa el formulario con los detalles del juguete, incluyendo múltiples imágenes y etiquetas.
-3. Haz clic en "Guardar Juguete" para añadirlo a la colección.
+1. En la página principal, haz clic en "Ingresar Juguete" en el menú de navegación.
+2. Completa el formulario con los detalles del juguete.
+3. Haz clic en "Guardar Juguete" para añadirlo a tu colección.
 
 #### Ver Lista de Juguetes
 1. Haz clic en "Ver Juguetes" en el menú de navegación.
 2. Utiliza la paginación para navegar por la lista si hay más de 10 juguetes.
 3. Usa la barra de búsqueda para encontrar juguetes por nombre, descripción o etiquetas.
 4. Utiliza los filtros de tipo y estado para refinar la lista de juguetes.
-5. Haz clic en "Limpiar Filtros" para restablecer la búsqueda y los filtros.
 
 #### Actualizar Estado de un Juguete
 1. En la lista de juguetes, utiliza el menú desplegable en la columna "Estado" para cambiar el estado del juguete.
@@ -82,9 +94,12 @@ Este proyecto es un Sistema de Control de Juguetes diseñado para ayudar a gesti
 2. Utiliza los selectores de año y mes para filtrar los reportes por período.
 3. Visualiza diferentes categorías de reportes: juguetes por mes y año, por estado, juguetes dañados, por origen y por tipo.
 
-## Análisis de Datos con Python
+#### Generar Gráficos y Análisis
+1. Ejecuta el script `analyze_toys.py`.
+2. El script generará gráficos de distribución de tipos de juguetes y estados, guardándolos como imágenes PNG.
 
-El archivo `analyze_toys.py` proporciona funcionalidades adicionales para el análisis de datos:
+#### Cerrar Sesión
+1. Haz clic en el botón "Cerrar Sesión" en la esquina superior derecha de la página para salir de tu cuenta.
 
 1. Extracción de datos:
 - Utiliza BeautifulSoup para analizar el archivo HTML y extraer los datos de los juguetes.
@@ -148,10 +163,10 @@ Los gráficos generados pueden ser utilizados para enriquecer los reportes en la
 
 ## Reglas de Negocio
 - Un juguete puede ser regalado si:
-  - Tiene más de un año de antigüedad.
-  - Su estado es "Nuevo", "Buen estado" o "Aun funciona".
+- Tiene más de un año de antigüedad.
+- Su estado es "Nuevo", "Buen estado" o "Aun funciona".
 - Un juguete puede ser botado si:
-  - Su estado es "Dañado".
+- Su estado es "Dañado".
 - Los estados posibles de un juguete son: Nuevo, Buen estado, Aun funciona, Dañado.
 - Los orígenes posibles de un juguete son: Padres, Familiar, Amigos, Navidad, Cumpleaños, Otros.
 - Los tipos de juguete son: Muñeco, Didáctico, Auto, Peluche, Maquillaje, Electrónico, Electrodoméstico, Deportivo.
@@ -163,3 +178,7 @@ Los gráficos generados pueden ser utilizados para enriquecer los reportes en la
 Oscar Castro - ocastrobeltran@gmail.com
 
 Enlace del Proyecto: https://github.com/ocastrobeltran/toy-management-system.git
+
+## Agradecimientos
+- [Talento Tech](https://talentotech.gov.co/) por proporcionar los logos utilizados en el proyecto.
+- [MinTIC](https://www.mintic.gov.co/) por su apoyo en iniciativas de desarrollo tecnológico.
